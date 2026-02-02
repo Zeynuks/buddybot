@@ -1,0 +1,39 @@
+services:
+    postgres:
+        container_name: Database
+        image: postgres:16
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=123123
+            - POSTGRES_DB=BuddyBot
+        ports:
+            - "5436:5432"
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+
+    adminapi:
+        container_name: Backend-AdminApi
+        build:
+            context: .
+            dockerfile: /backend/BuddyBot/Admin.Api/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=BuddyBot;Username=postgres;Password=123123
+        depends_on:
+            - postgres
+        ports:
+            - "8080:8080"
+        command: ["dotnet", "Admin.Api.dll"]
+
+    frontend:
+        container_name: Frontend
+        build:
+            context: .
+            dockerfile: /frontend/admin/Dockerfile
+        ports:
+            - "3000:80"
+        depends_on:
+            - adminapi
+
+volumes:
+    postgres-data:

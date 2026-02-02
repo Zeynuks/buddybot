@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsNotAsErrors>NU1900</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UseCases\Departments\Dtos\**" />
+    <Compile Remove="UseCases\Teams\Dto\**" />
+    <EmbeddedResource Remove="UseCases\Departments\Dtos\**" />
+    <EmbeddedResource Remove="UseCases\Teams\Dto\**" />
+    <None Remove="UseCases\Departments\Dtos\**" />
+    <None Remove="UseCases\Teams\Dto\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="Hangfire" Version="1.8.18" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.35.0" />
+  </ItemGroup>
+
+</Project>

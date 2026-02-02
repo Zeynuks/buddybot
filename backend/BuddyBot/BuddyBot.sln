@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{BFCEC011-0089-4B60-9441-995B2936BB44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{29321426-F8A4-4904-83A3-050E3B5634F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{D9E6F44A-4A03-427D-BCCA-EA26608B3E80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Api", "Admin.Api\Admin.Api.csproj", "{68450016-F705-458E-B716-2230C3523D72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBot", "TelegramBot\TelegramBot.csproj", "{7816D43A-45F1-4AB4-8B78-A2ED41A2E481}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler", "Scheduler\Scheduler.csproj", "{B06B9BFE-8270-4A93-9A75-4280080C9001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{2765649C-D20A-4AD6-B325-BFD2D84BE615}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFCEC011-0089-4B60-9441-995B2936BB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFCEC011-0089-4B60-9441-995B2936BB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFCEC011-0089-4B60-9441-995B2936BB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCEC011-0089-4B60-9441-995B2936BB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29321426-F8A4-4904-83A3-050E3B5634F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29321426-F8A4-4904-83A3-050E3B5634F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29321426-F8A4-4904-83A3-050E3B5634F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29321426-F8A4-4904-83A3-050E3B5634F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E6F44A-4A03-427D-BCCA-EA26608B3E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E6F44A-4A03-427D-BCCA-EA26608B3E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E6F44A-4A03-427D-BCCA-EA26608B3E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E6F44A-4A03-427D-BCCA-EA26608B3E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68450016-F705-458E-B716-2230C3523D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68450016-F705-458E-B716-2230C3523D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68450016-F705-458E-B716-2230C3523D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68450016-F705-458E-B716-2230C3523D72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7816D43A-45F1-4AB4-8B78-A2ED41A2E481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7816D43A-45F1-4AB4-8B78-A2ED41A2E481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7816D43A-45F1-4AB4-8B78-A2ED41A2E481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7816D43A-45F1-4AB4-8B78-A2ED41A2E481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B06B9BFE-8270-4A93-9A75-4280080C9001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B06B9BFE-8270-4A93-9A75-4280080C9001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B06B9BFE-8270-4A93-9A75-4280080C9001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B06B9BFE-8270-4A93-9A75-4280080C9001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2765649C-D20A-4AD6-B325-BFD2D84BE615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2765649C-D20A-4AD6-B325-BFD2D84BE615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2765649C-D20A-4AD6-B325-BFD2D84BE615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2765649C-D20A-4AD6-B325-BFD2D84BE615}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E79BAA2D-BBEE-477A-941E-368B2C3AE7B3}
+	EndGlobalSection
+EndGlobal
