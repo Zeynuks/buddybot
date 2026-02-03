@@ -1,33 +1,24 @@
 ﻿using Application.Extensions;
+using Application.Interfaces;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Infrastructure.Extensions;
 using Scheduler.Jobs;
+using Scheduler.Notifications;
 using Scheduler.Schedulers;
-using Telegram.Bot;
-using TelegramBot.Notifiers;
-using TelegramBot.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
 
 builder.Services.AddInfrastructure( builder.Configuration, false );
 builder.Services.AddApplication();
 
-string? botToken = builder.Configuration[ "TelegramBot:Token" ];
-if ( string.IsNullOrWhiteSpace( botToken ) )
-{
-    throw new InvalidOperationException( "TelegramBot:Token не задан в конфигурации!" );
-}
-
-builder.Services.AddSingleton<ITelegramBotClient>( new TelegramBotClient( botToken! ) );
-
 builder.Services.AddScoped<OnboardingAccessScheduler>();
 builder.Services.AddScoped<AccountCreationTokenExpirationScheduler>();
-builder.Services.AddScoped<OnboardingNotifier>();
-builder.Services.AddScoped<FeedbackNotifier>();
-builder.Services.AddScoped<NotificationService>();
-builder.Services.AddScoped<CandidateService>();
-builder.Services.AddScoped<UserService>();
+
+builder.Services.AddHttpClient<INotificationPublisher, NotificationHttpClient>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["TelegramBot:Url"] ?? "http://telegram-bot-container:5000");
+});
 
 builder.Services.AddHangfire( config =>
     config.SetDataCompatibilityLevel( CompatibilityLevel.Version_180 )

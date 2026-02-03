@@ -1,44 +1,47 @@
-﻿using AppUser = Domain.Entities.User;
-
+﻿using Contracts.NotificationDtos;
+using Domain.Entities;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot;
 using TelegramBot.Messages;
 using TelegramBot.Keyboards.Candidate.Onboarding;
 using Domain.Enums;
 using TelegramBot.Services;
-using TelegramBot.Helpers;
 
 namespace TelegramBot.Notifiers;
-public class OnboardingNotifier( ITelegramBotClient botClient, CandidateService candidateService, UserService userService )
+
+public class OnboardingNotifier(
+    ITelegramBotClient botClient,
+    CandidateService candidateService,
+    UserService userService)
 {
-    public async Task NotifyGranted( long telegramId, string firstName )
+    public async Task NotifyGranted(FeedbackReminderRequest request)
     {
         await botClient.SendMessage(
-            chatId: telegramId,
-            text: OnboardingMessages.OnboardingPendingStart( firstName ),
+            chatId: request.TelegramId,
+            text: OnboardingMessages.OnboardingPendingStart(request.FirstName ?? string.Empty),
             parseMode: ParseMode.Html,
             replyMarkup: Inline.OnboardingPendingStart()
         );
     }
 
-    public async Task NotifyStartReminder( long telegramId, string firstName )
+    public async Task NotifyStartReminder(FeedbackReminderRequest request)
     {
-        AppUser? candidate = await userService.GetUserByTelegramId( telegramId );
-        if ( candidate is null )
+        User? candidate = await userService.GetUserByTelegramId(request.TelegramId);
+        if (candidate is null)
         {
             return;
         }
 
-        var process = await candidateService.GetCandidateProcess( candidate.Id, ProcessKind.Onboarding );
+        var process = await candidateService.GetCandidateProcess(candidate.Id, ProcessKind.Onboarding);
 
-        if ( process == null || process.CurrentStep != StepKind.OnboardingPendingStart )
+        if (process == null || process.CurrentStep != StepKind.OnboardingPendingStart)
         {
             return;
         }
 
         await botClient.SendMessage(
-            chatId: telegramId,
-            text: OnboardingMessages.OnboardingReminder( firstName ),
+            chatId: request.TelegramId,
+            text: OnboardingMessages.OnboardingReminder(request.FirstName ?? string.Empty),
             parseMode: ParseMode.Html,
             replyMarkup: Inline.OnboardingPendingStart()
         );

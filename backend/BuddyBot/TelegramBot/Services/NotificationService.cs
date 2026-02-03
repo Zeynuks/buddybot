@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using Contracts.NotificationDtos;
+using Hangfire;
 using TelegramBot.Notifiers;
 
 namespace TelegramBot.Services;
@@ -19,8 +20,15 @@ public class NotificationService( IBackgroundJobClient backgroundJobClient )
             return false;
         }
 
+        FeedbackReminderRequest request = new()
+        {
+            TelegramId = telegramId,
+            FirstName = firstName,
+            AccessTimeUtc = DateTime.UtcNow
+        };
+        
         backgroundJobClient.Schedule<FeedbackNotifier>(
-            notifier => notifier.NotifyPreboarding( telegramId, firstName ),
+            notifier => notifier.NotifyPreboarding( request ),
             TimeSpan.FromDays( PreboardingFeedbackDelayDays )
         );
 
@@ -33,9 +41,16 @@ public class NotificationService( IBackgroundJobClient backgroundJobClient )
         {
             return false;
         }
+        
+        FeedbackReminderRequest request = new()
+        {
+            TelegramId = telegramId,
+            FirstName = firstName,
+            AccessTimeUtc = DateTime.UtcNow
+        };
 
         backgroundJobClient.Schedule<FeedbackNotifier>(
-            notifier => notifier.NotifyOnboarding( telegramId, firstName ),
+            notifier => notifier.NotifyOnboarding( request ),
             TimeSpan.FromDays( OnboardingFeedbackDelayDays )
         );
 
@@ -53,8 +68,15 @@ public class NotificationService( IBackgroundJobClient backgroundJobClient )
         TimeSpan firstDelay = firstReminderUtc - DateTime.UtcNow;
         if ( firstDelay > TimeSpan.Zero )
         {
+            FeedbackReminderRequest request = new()
+            {
+                TelegramId = telegramId,
+                FirstName = firstName,
+                AccessTimeUtc = DateTime.UtcNow
+            };
+            
             backgroundJobClient.Schedule<OnboardingNotifier>(
-                notifier => notifier.NotifyStartReminder( telegramId, firstName ),
+                notifier => notifier.NotifyStartReminder( request ),
                 firstDelay
             );
         }
@@ -63,8 +85,15 @@ public class NotificationService( IBackgroundJobClient backgroundJobClient )
         TimeSpan secondDelay = secondReminderUtc - DateTime.UtcNow;
         if ( secondDelay > TimeSpan.Zero )
         {
+            FeedbackReminderRequest request = new()
+            {
+                TelegramId = telegramId,
+                FirstName = firstName,
+                AccessTimeUtc = DateTime.UtcNow
+            };
+            
             backgroundJobClient.Schedule<OnboardingNotifier>(
-                notifier => notifier.NotifyStartReminder( telegramId, firstName ),
+                notifier => notifier.NotifyStartReminder( request ),
                 secondDelay
             );
         }

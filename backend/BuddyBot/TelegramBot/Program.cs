@@ -50,6 +50,7 @@ IHost host = Host.CreateDefaultBuilder( args )
         services.AddScoped<MediaService>();
         services.AddScoped<FeedbackService>();
 
+        services.AddControllers();
 
         foreach ( Type type in Assembly.GetExecutingAssembly().GetTypes() )
         {

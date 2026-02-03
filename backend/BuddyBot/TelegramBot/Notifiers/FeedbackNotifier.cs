@@ -1,26 +1,28 @@
-﻿using Telegram.Bot;
+﻿using Contracts.NotificationDtos;
+using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using TelegramBot.Keyboards.Candidate.Feedback;
 using TelegramBot.Messages;
 
 namespace TelegramBot.Notifiers;
+
 public class FeedbackNotifier( ITelegramBotClient botClient )
 {
-    public async Task NotifyPreboarding( long telegramId, string firstName )
+    public async Task NotifyPreboarding( FeedbackReminderRequest request )
     {
         await botClient.SendMessage(
-            chatId: telegramId,
-            text: FeedbackMessages.PreboardingFeedbackRating( firstName ),
+            chatId: request.TelegramId,
+            text: FeedbackMessages.PreboardingFeedbackRating( request.FirstName ?? string.Empty ),
             parseMode: ParseMode.Html,
             replyMarkup: Inline.PreboardingRating()
         );
     }
 
-    public async Task NotifyOnboarding( long telegramId, string firstName )
+    public async Task NotifyOnboarding( FeedbackReminderRequest request )
     {
         await botClient.SendMessage(
-            chatId: telegramId,
-            text: FeedbackMessages.OnboardingFeedbackRating( firstName ),
+            chatId: request.TelegramId,
+            text: FeedbackMessages.OnboardingFeedbackRating( request.FirstName ?? string.Empty ),
             parseMode: ParseMode.Html,
             replyMarkup: Inline.OnboardingRating()
         );

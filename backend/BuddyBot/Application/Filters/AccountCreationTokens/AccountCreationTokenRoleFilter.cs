@@ -1,7 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Domain.Filters;
 
-namespace Domain.Filters;
+namespace Application.Filters.AccountCreationTokens;
 
 public class AccountCreationTokenRoleFilter : IFilter<AccountCreationToken>
 {

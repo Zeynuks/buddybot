@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder( args );
 Log.Logger = new LoggerConfiguration()
    .ReadFrom.Configuration( builder.Configuration )
    .Enrich.FromLogContext()
+   .WriteTo.Console()
    .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -34,7 +35,7 @@ builder.Services.AddCors( options =>
 {
     options.AddPolicy( "AllowLocalhost", policy =>
     {
-        policy.WithOrigins( "http://localhost:5173" )
+        policy.WithOrigins( "http://localhost:8080" )
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();

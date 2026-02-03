@@ -1,25 +1,25 @@
 ﻿using Application.CQRSInterfaces;
+using Application.Interfaces;
 using Application.Results;
 using Application.UseCases.CandidateProcesses.Commands.TransferToOnboarding;
 using Application.UseCases.OnboardingAccessRequests.Queries.GetDueCandidates;
+using Contracts.NotificationDtos;
 using Domain.Entities;
-using TelegramBot.Notifiers;
-using TelegramBot.Services;
 
 namespace Scheduler.Schedulers;
+
 public class OnboardingAccessScheduler(
-   
     IQueryHandler<List<User>, GetDueCandidatesQuery> getDueCandidatesQueryHandler,
     ICommandHandlerWithResult<TransferToOnboardingCommand, CandidateProcess> transferToOnboardingHandler,
-    OnboardingNotifier notifier,
-    NotificationService notificationService )
+    INotificationPublisher notificationPublisher
+)
 {
     public async Task ProcessDueRequests()
     {
-        var utcNow = DateTime.UtcNow;
-        GetDueCandidatesQuery query = new GetDueCandidatesQuery
+        DateTime utcNow = DateTime.UtcNow;
+        GetDueCandidatesQuery query = new()
         {
-            UtcNow = utcNow,
+            UtcNow = utcNow
         };
 
         Result<List<User>> usersResult = await getDueCandidatesQueryHandler.HandleAsync( query );
@@ -31,11 +31,11 @@ public class OnboardingAccessScheduler(
 
         foreach ( User user in usersResult.Value )
         {
-            TransferToOnboardingCommand command = new TransferToOnboardingCommand
+            TransferToOnboardingCommand command = new()
             {
                 CandidateId = user.Id
             };
-
+            
             Result<CandidateProcess> transferResult = await transferToOnboardingHandler.HandleAsync( command );
 
             if ( transferResult.IsSuccess )
@@ -44,11 +44,18 @@ public class OnboardingAccessScheduler(
                 string? firstName = user.ContactInfo?.FirstName;
                 DateTime? onboardingAccessTimeUtc = user.OnboardingAccessTimeUtc;
 
-                if ( telegramId != null && !string.IsNullOrWhiteSpace( firstName ) )
+                if ( telegramId.HasValue && 
+                     !string.IsNullOrWhiteSpace( firstName ) &&
+                     onboardingAccessTimeUtc.HasValue )
                 {
-                    await notifier.NotifyGranted( telegramId.Value, firstName );
+                    FeedbackReminderRequest dto = new()
+                    {
+                        TelegramId = telegramId.Value,
+                        FirstName = firstName,
+                        AccessTimeUtc = onboardingAccessTimeUtc.Value
+                    };
 
-                    notificationService.ScheduleOnboardingStartReminders( telegramId.Value, firstName, onboardingAccessTimeUtc.Value );
+                    await notificationPublisher.PublishOnboardingGrantedAsync( dto );
                 }
             }
         }
