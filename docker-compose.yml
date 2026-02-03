@@ -15,7 +15,7 @@ services:
         container_name: Backend-AdminApi
         build:
             context: .
-            dockerfile: /backend/BuddyBot/Admin.Api/Dockerfile
+            dockerfile: ./backend/BuddyBot/Admin.Api/Dockerfile
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=BuddyBot;Username=postgres;Password=123123
@@ -23,13 +23,44 @@ services:
             - postgres
         ports:
             - "8080:8080"
+            - "8081:8081"
         command: ["dotnet", "Admin.Api.dll"]
+        
+    scheduler:
+        container_name: Backend-Scheduler
+        build:
+            context: .
+            dockerfile: ./backend/BuddyBot/Scheduler/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=BuddyBot;Username=postgres;Password=123123
+        depends_on:
+            - postgres
+        ports:
+            - "8082:8082"
+            - "8083:8083"
+        command: ["dotnet", "Scheduler.dll"]
+        
+    telegrambot:
+        container_name: Backend-TelegramBot
+        build:
+            context: .
+            dockerfile: ./backend/BuddyBot/TelegramBot/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=BuddyBot;Username=postgres;Password=123123
+        depends_on:
+            - postgres
+        ports:
+            - "8084:8084"
+            - "8085:8085"
+        command: ["dotnet", "TelegramBot.dll"]
 
     frontend:
         container_name: Frontend
         build:
             context: .
-            dockerfile: /frontend/admin/Dockerfile
+            dockerfile: ./frontend/admin/Dockerfile
         ports:
             - "3000:80"
         depends_on:

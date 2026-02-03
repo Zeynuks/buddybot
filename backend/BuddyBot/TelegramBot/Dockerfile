@@ -1,27 +1,27 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 8084
+EXPOSE 8085
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["backend/BuddyBot/Admin.Api/Admin.Api.csproj", "Admin.Api/"]
+COPY ["backend/BuddyBot/TelegramBot/TelegramBot.csproj", "TelegramBot/"]
 COPY ["backend/BuddyBot/Application/Application.csproj", "Application/"]
 COPY ["backend/BuddyBot/Domain/Domain.csproj", "Domain/"]
 COPY ["backend/BuddyBot/Contracts/Contracts.csproj", "Contracts/"]
 COPY ["backend/BuddyBot/Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-RUN dotnet restore "Admin.Api/Admin.Api.csproj"
+RUN dotnet restore "TelegramBot/TelegramBot.csproj"
 COPY backend/BuddyBot/. .
-WORKDIR "/src/Admin.Api"
-RUN dotnet build "./Admin.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/TelegramBot"
+RUN dotnet build "./TelegramBot.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Admin.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./TelegramBot.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Admin.Api.dll"]
+ENTRYPOINT ["dotnet", "TelegramBot.dll"]
